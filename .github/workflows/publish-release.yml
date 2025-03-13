@@ -34,7 +34,7 @@ jobs:
           release_name: ${{ github.ref }}
           body_path: "CHANGELOG.md"
           draft: false
-          prerelease: false
+          prerelease: ${{ contains(github.ref, 'a') }}
 
       - name: Build a binary wheel and a source tarball
         run: python3 -m build
