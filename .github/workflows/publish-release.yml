@@ -5,6 +5,9 @@ on:
 
 name: Create and Publish Release
 
+permissions:
+  contents: write  # Ensure the workflow has write permissions for contents
+
 jobs:
   build:
     name: Build distribution
