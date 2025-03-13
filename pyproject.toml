@@ -1,0 +1,40 @@
+[tool.black]
+line-length = 119
+
+[project]
+name = "Upsetter"
+version = "0.1.0a1"
+description = "Modern font subsetter – mostly a wrapper around various existing tools"
+authors = [
+    { name = "Yanone", email = "post@yanone.de" }
+]
+license = { text = "Apache-2.0" }
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["font", "subset", "subspace", "upsetter", "python"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha"
+]
+dependencies = [
+    "fonttools",
+]
+
+[project.urls]
+repository = "https://github.com/yanone/upsetter-py"
+"Bug Tracker" = "https://github.com/yanone/upsetter-py/issues"
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry]
+packages = [
+    { include = "upsetter", from = "Lib" }
+]
+
+
+[project.scripts]
+upsetter = "upsetter.cli:main"
