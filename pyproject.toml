@@ -20,6 +20,7 @@ classifiers = [
 ]
 dependencies = [
     "fonttools",
+    "opentype-feature-freezer",
 ]
 
 [project.urls]
