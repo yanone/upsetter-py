@@ -13,20 +13,20 @@ def upset(font_files, subspace=None, freeze=None, remove=None):
 
     # Cycle through all font files
     for font_file in font_files:
-        font = TTFont(font_file)
+        ttFont = TTFont(font_file)
 
         # Sub-Spacing
         if subspace:
             from fontTools.varLib.instancer import instantiateVariableFont
 
-            assert "fvar" in font, "Font is not a Variable Font"
+            assert "fvar" in ttFont, "Font is not a Variable Font"
             logging.info("#" * 40)
             logging.info(f"Subspacing {font_file} with {subspace}")
-            font = instantiateVariableFont(font, subspace, inplace=True)
+            ttFont = instantiateVariableFont(ttFont, subspace, inplace=True)
 
             # Adjust file name and save the font
             font_file = os.path.splitext(font_file)[0] + ".subspace" + os.path.splitext(font_file)[1]
-            font.save(font_file)
+            ttFont.save(font_file)
 
         # Feature-Freezing
         # Cycle through all features to freeze and decide whether to freeze them
@@ -35,8 +35,8 @@ def upset(font_files, subspace=None, freeze=None, remove=None):
         if freeze is not None:
             pyftfeatfreeze = []
             remaplayout = []
-            if "GSUB" in font:
-                gsub = font["GSUB"].table
+            if "GSUB" in ttFont:
+                gsub = ttFont["GSUB"].table
                 for feature in gsub.FeatureList.FeatureRecord:
                     found_lookuptypes = set()
                     if feature.FeatureTag in freeze:
