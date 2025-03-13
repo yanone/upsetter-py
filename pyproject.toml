@@ -3,7 +3,7 @@ line-length = 119
 
 [project]
 name = "Upsetter"
-version = "0.1.0a1"
+version = "0.1.0a6"
 description = "Modern font subsetter – mostly a wrapper around various existing tools"
 authors = [
     { name = "Yanone", email = "post@yanone.de" }
