@@ -4,7 +4,7 @@ import logging
 from types import SimpleNamespace
 
 
-def upset(font_files, subspace=None, freeze_features=None, remove_features=None):
+def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove_features=None):
 
     # Input validation
     if freeze_features is not None and remove_features is not None:
@@ -115,25 +115,29 @@ def upset(font_files, subspace=None, freeze_features=None, remove_features=None)
         # Subset
 
         # These are the default options when nothing is specifically set
-        from fontTools.subset import Subsetter, Options
+        from fontTools.subset import Subsetter, Options, parse_unicodes
 
         options = Options()
 
         # layout features
+        gsub = ttFont["GSUB"].table
         features = [FeatureRecord.FeatureTag for FeatureRecord in gsub.FeatureList.FeatureRecord]
         options.layout_features = list(set(features) - set(remove_features) if remove_features else set(features))
         options.glyph_names = True  # Keep glyph names
 
-        # Keep all unicodes (for now)
-        unicodes = []
-        for t in ttFont["cmap"].tables:
-            if t.isUnicode():
-                unicodes.extend(t.cmap.keys())
-                if t.format == 14:
-                    unicodes.extend(t.uvsDict.keys())
+        # Keep all unicodes
+        if unicodes is None:
+            unicode_list = []
+            for t in ttFont["cmap"].tables:
+                if t.isUnicode():
+                    unicode_list.extend(t.cmap.keys())
+                    if t.format == 14:
+                        unicode_list.extend(t.uvsDict.keys())
+        else:
+            unicode_list = parse_unicodes(unicodes)
 
         subsetter = Subsetter(options=options)
-        subsetter.populate(unicodes=unicodes)
+        subsetter.populate(unicodes=unicode_list)
         subsetter.subset(ttFont)
 
         # Adjust file name and save the font

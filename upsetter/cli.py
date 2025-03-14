@@ -22,6 +22,16 @@ def main():
         ),
     )
     parser.add_argument(
+        "-u",
+        "--unicodes",
+        required=False,
+        type=str,
+        help=(
+            "Comma-separated list of unicodes or unicode ranges. E.g.: 'U+0041-005A,U+0061-007A'. "
+            "By default, all unicodes are kept."
+        ),
+    )
+    parser.add_argument(
         "-f",
         "--freeze",
         required=False,
@@ -50,9 +60,10 @@ def main():
 
     upset(
         args.font_files,
-        parseLimits(args.subspace.split(",")) if args.subspace else None,
-        args.freeze.split(",") if args.freeze else None,
-        args.remove.split(",") if args.remove else None,
+        unicodes=args.unicodes or None,
+        subspace=parseLimits(args.subspace.split(",")) if args.subspace else None,
+        freeze_features=args.freeze.split(",") if args.freeze else None,
+        remove_features=args.remove.split(",") if args.remove else None,
     )
 
 
