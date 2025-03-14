@@ -112,4 +112,32 @@ def upset(font_files, subspace=None, freeze_features=None, remove_features=None)
                 font_file = os.path.splitext(font_file)[0] + ".freeze" + os.path.splitext(font_file)[1]
                 ttFont.save(font_file)
 
+        # Subset
+
+        # These are the default options when nothing is specifically set
+        from fontTools.subset import Subsetter, Options
+
+        options = Options()
+
+        # layout features
+        features = [FeatureRecord.FeatureTag for FeatureRecord in gsub.FeatureList.FeatureRecord]
+        options.layout_features = list(set(features) - set(remove_features) if remove_features else set(features))
+        options.glyph_names = True  # Keep glyph names
+
+        # Keep all unicodes (for now)
+        unicodes = []
+        for t in ttFont["cmap"].tables:
+            if t.isUnicode():
+                unicodes.extend(t.cmap.keys())
+                if t.format == 14:
+                    unicodes.extend(t.uvsDict.keys())
+
+        subsetter = Subsetter(options=options)
+        subsetter.populate(unicodes=unicodes)
+        subsetter.subset(ttFont)
+
+        # Adjust file name and save the font
+        font_file = os.path.splitext(font_file)[0] + ".subset" + os.path.splitext(font_file)[1]
+        ttFont.save(font_file)
+
         ttFont.close()
