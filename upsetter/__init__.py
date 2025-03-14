@@ -37,7 +37,6 @@ def upset(font_files, subspace=None, freeze=None, remove=None):
         if freeze is not None:
             encoded_glyphs = ttFont.getBestCmap().values()
             pyft_featfreeze = []
-            remap_layout = []
 
             if "GSUB" in ttFont:
                 gsub = ttFont["GSUB"].table
@@ -67,10 +66,6 @@ def upset(font_files, subspace=None, freeze=None, remove=None):
                             # All source glyphs are encoded
                             if all(source_glyphs_have_unicodes):
                                 pyft_featfreeze.append(feature.FeatureTag)
-                            else:
-                                remap_layout.append(feature.FeatureTag)
-                        else:
-                            remap_layout.append(feature.FeatureTag)
 
             if pyft_featfreeze:
 
@@ -101,13 +96,15 @@ def upset(font_files, subspace=None, freeze=None, remove=None):
                 pyft_featfreezer.ttx = ttFont
                 pyft_featfreezer.remapByOTL()
 
-            if remap_layout:
+            # For remap-layout, do all features here regardless of whether they've previously been treated
+            # with pyft_featfreeze because remap-layout can handle all GSUB lookup types and also GPOS lookups
+            # in case a feature has both GSUB and GPOS lookups.
+            if freeze:
                 logging.info("#" * 40)
-                logging.info(f"remap_layout {remap_layout}")
+                logging.info(f"remap_layout {freeze}")
 
                 # Continue with remap-layout here
 
-            if pyft_featfreeze or remap_layout:
                 # Adjust file name and save the font
                 font_file = os.path.splitext(font_file)[0] + ".freeze" + os.path.splitext(font_file)[1]
                 ttFont.save(font_file)
