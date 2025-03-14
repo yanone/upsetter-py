@@ -4,13 +4,13 @@ import logging
 from types import SimpleNamespace
 
 
-def upset(font_files, subspace=None, freeze=None, remove=None):
+def upset(font_files, subspace=None, freeze_features=None, remove_features=None):
 
     # Input validation
-    if freeze is not None and remove is not None:
+    if freeze_features is not None and remove_features is not None:
         assert (
-            set(freeze) & set(remove) == set()
-        ), f"Features to freeze and remove must not overlap: {set(freeze) & set(remove)}"
+            set(freeze_features) & set(remove_features) == set()
+        ), f"Features to freeze and remove must not overlap: {set(freeze_features) & set(remove_features)}"
 
     # Cycle through all font files
     for font_file in font_files:
@@ -34,14 +34,14 @@ def upset(font_files, subspace=None, freeze=None, remove=None):
         # with pyft_featfreeze in case all lookups are of type 1 (Single Substitution)
         # AND all source glyphs are encoded (otherwise no cmap-remapping is possible)
         # OR with gftools-remap-layout in case of all other lookup types
-        if freeze is not None:
+        if freeze_features is not None:
             encoded_glyphs = ttFont.getBestCmap().values()
             pyft_featfreeze = []
 
             if "GSUB" in ttFont:
                 gsub = ttFont["GSUB"].table
                 for feature in gsub.FeatureList.FeatureRecord:
-                    if feature.FeatureTag in freeze:
+                    if feature.FeatureTag in freeze_features:
                         found_lookuptypes = set()
                         lookups = []
                         for lookup_index in feature.Feature.LookupListIndex:
@@ -99,11 +99,14 @@ def upset(font_files, subspace=None, freeze=None, remove=None):
             # For remap-layout, do all features here regardless of whether they've previously been treated
             # with pyft_featfreeze because remap-layout can handle all GSUB lookup types and also GPOS lookups
             # in case a feature has both GSUB and GPOS lookups.
-            if freeze:
+            if freeze_features:
+                from .remap_layout import remap
+
                 logging.info("#" * 40)
-                logging.info(f"remap_layout {freeze}")
+                logging.info(f"remap_layout {freeze_features}")
 
                 # Continue with remap-layout here
+                remap(ttFont, [f"{feature}=>rclt" for feature in freeze_features])
 
                 # Adjust file name and save the font
                 font_file = os.path.splitext(font_file)[0] + ".freeze" + os.path.splitext(font_file)[1]
