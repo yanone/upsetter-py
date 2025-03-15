@@ -123,7 +123,7 @@ def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove
         gsub = ttFont["GSUB"].table
         features = [FeatureRecord.FeatureTag for FeatureRecord in gsub.FeatureList.FeatureRecord]
         options.layout_features = list(set(features) - set(remove_features) if remove_features else set(features))
-        options.glyph_names = True  # Keep glyph names
+        # options.glyph_names = True  # Don't keep glyph names for now (file size optimization)
 
         # Keep all unicodes
         if unicodes is None:
