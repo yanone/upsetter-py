@@ -58,7 +58,7 @@ Otherwise, these are the arguments that correspond to each of the four aforement
 upsetter -u U+00A0 -s wght=400 -f smcp -r ss01 -c -v font.ttf
 ```
 
-`-u` or `--unicodes` takes a list of unicodes in the format `U+00A0-U+00B0,U+00C0-U+00F0`.
+`-u` or `--unicodes` takes a list of unicodes to keep in the font in the format `U+00A0-U+00B0,U+00C0-U+00F0`. All other encoded characters will be removed as well as glyphs that become unreachable as a consequence of that.
 
 `-s` or `--subspace` takes a list of designspace locations in the format `wght=400:700,wdth=100`.
 
