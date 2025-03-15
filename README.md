@@ -60,11 +60,13 @@ upsetter -u U+00A0 -s wght=400 -f smcp -r ss01 -c -v font.ttf
 
 `-u` or `--unicodes` takes a list of unicodes to keep in the font in the format `U+00A0-U+00B0,U+00C0-U+00F0`. All other encoded characters will be removed as well as glyphs that become unreachable as a consequence of that.
 
-`-s` or `--subspace` takes a list of designspace locations in the format `wght=400:700,wdth=100`.
+`-s` or `--subspace` takes a list of designspace locations to subspace, in the format `wght=400:700,wdth=100`. Axes that are not mentioned here will not be touched. If you want to drop an axis, add an explicit `opsz=drop` to the list.
 
 `-f` or `--freeze` takes a list of features to freeze: `smcp,c2sc`.
 
 `-r` or `--remove` takes a list of features to remove entirely `ss01,ss02,ss03`.
+
+Feature that are neither touched in `--freeze` nor `--remove` will remain untouched.
 
 `-c` or `--compress` will compress webfonts into `woff2` (not yet implemented).
 
