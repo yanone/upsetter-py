@@ -26,8 +26,8 @@ def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove
             ttFont = instantiateVariableFont(ttFont, subspace, inplace=True)
 
             # Adjust file name and save the font
-            font_file = os.path.splitext(font_file)[0] + ".subspace" + os.path.splitext(font_file)[1]
-            ttFont.save(font_file)
+            # font_file = os.path.splitext(font_file)[0] + ".subspace" + os.path.splitext(font_file)[1]
+            # ttFont.save(font_file)
 
         # Feature-Freezing
         # Cycle through all features to freeze and decide whether to freeze them
@@ -109,8 +109,8 @@ def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove
                 remap(ttFont, [f"{feature}=>rclt" for feature in freeze_features])
 
                 # Adjust file name and save the font
-                font_file = os.path.splitext(font_file)[0] + ".freeze" + os.path.splitext(font_file)[1]
-                ttFont.save(font_file)
+                # font_file = os.path.splitext(font_file)[0] + ".freeze" + os.path.splitext(font_file)[1]
+                # ttFont.save(font_file)
 
         # Subset
 
