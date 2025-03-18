@@ -45,10 +45,18 @@ def main():
         type=str,
         help="Comma-separated list of features to remove. E.g.: 'ss01' or 'ss01,ss02'",
     )
+    # parser.add_argument(
+    #     "-i",
+    #     "--italic",
+    #     help="Split Italic and Roman glyphs into separate fonts",
+    #     required=False,
+    #     action="store_true",
+    # )
     parser.add_argument(
         "-v",
         "--verbose",
         help="Be verbose. Set logging level to INFO.",
+        required=False,
         action="store_true",
     )
     parser.add_argument("font_files", nargs="+", help="Font files to process (repeatable)")
@@ -64,6 +72,7 @@ def main():
         subspace=parseLimits(args.subspace.split(",")) if args.subspace else None,
         freeze_features=args.freeze.split(",") if args.freeze else None,
         remove_features=args.remove.split(",") if args.remove else None,
+        # italic=args.italic,
     )
 
 

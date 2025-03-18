@@ -3,6 +3,7 @@ from fontTools.ttLib import TTFont
 import logging
 from types import SimpleNamespace
 import copy
+from fontTools.varLib.instancer import parseLimits
 
 
 def font_subspace(ttFont, subspace):
@@ -99,7 +100,7 @@ def font_freeze_features(ttFont, freeze_features):
     return ttFont
 
 
-def font_subset(ttFont, unicodes, remove_features):
+def font_subset(ttFont, unicodes=None, remove_features=None):
 
     # These are the default options when nothing is specifically set
     from fontTools.subset import Subsetter, Options, parse_unicodes
@@ -130,7 +131,7 @@ def font_subset(ttFont, unicodes, remove_features):
     return ttFont
 
 
-def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove_features=None):
+def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove_features=None, italic=False):
 
     # Input validation
     if freeze_features is not None and remove_features is not None:
@@ -152,6 +153,27 @@ def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove
 
         # Subset
         ttFont = font_subset(ttFont, unicodes, remove_features)
+
+        # # Italic
+        # TODO: Keep this for later
+        # if italic:
+
+        #     # Roman
+        #     ttFont_roman = font_subspace(ttFont, parseLimits("ital=0"))
+        #     ttFont_roman = font_subset(ttFont_roman, remove_features=["ital"])
+
+        #     # Adjust file name and save the font
+        #     font_file = os.path.splitext(font_file)[0] + ".roman.subset" + os.path.splitext(font_file)[1]
+        #     ttFont.save(font_file)
+
+        #     # Italic
+        #     ttFont_italic = font_subspace(ttFont, parseLimits("ital=1"))
+        #     ttFont_italic = font_freeze_features(ttFont_italic, freeze_features=["ital"])
+        #     ttFont_italic = font_subset(ttFont_italic)
+
+        #     # Adjust file name and save the font
+        #     font_file = os.path.splitext(font_file)[0] + ".italic.subset" + os.path.splitext(font_file)[1]
+        #     ttFont.save(font_file)
 
         # Adjust file name and save the font
         font_file = os.path.splitext(font_file)[0] + ".subset" + os.path.splitext(font_file)[1]
