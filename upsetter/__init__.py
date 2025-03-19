@@ -23,7 +23,7 @@ def font_subspace(ttFont, subspace):
 # with pyft_featfreeze in case all lookups are of type 1 (Single Substitution)
 # AND all source glyphs are encoded (otherwise no cmap-remapping is possible)
 # OR with gftools-remap-layout in case of all other lookup types
-def font_freeze_features(ttFont, freeze_features):
+def font_freeze_features(ttFont, freeze_features, name):
 
     ttFont = copy.deepcopy(ttFont)
 
@@ -87,6 +87,17 @@ def font_freeze_features(ttFont, freeze_features):
         pyft_featfreezer = RemapByOTL(options)
         pyft_featfreezer.ttx = ttFont
         pyft_featfreezer.remapByOTL()
+    if name:
+        old_ps_name = ttFont["name"].getName(6, 3, 1, 1033).toUnicode()
+
+        options.suffix = bool(name)  # add a suffix to the font family name
+        options.usesuffix = name  # use a custom suffix when --suffix is enabled
+        pyft_featfreezer.renameFont()
+
+        new_ps_name = old_ps_name.replace("-", f"{name.replace(' ', '')}-")
+        logging.info(f"Replacing in name table: '{old_ps_name}' => '{new_ps_name}'")
+        for record in ttFont["name"].names:
+            record.string = record.toStr().replace(old_ps_name, new_ps_name)
 
     # For remap-layout, do all features here regardless of whether they've previously been treated
     # with pyft_featfreeze because remap-layout can handle all GSUB lookup types and also GPOS lookups
@@ -145,6 +156,7 @@ def upset(
     freeze_features=None,
     remove_features=None,
     italic=False,
+    name="",
     keep_glyph_names=False,
 ):
 
@@ -164,7 +176,7 @@ def upset(
 
         # Feature-Freezing
         if freeze_features is not None:
-            ttFont = font_freeze_features(ttFont, freeze_features)
+            ttFont = font_freeze_features(ttFont, freeze_features, name)
 
         # Subset
         ttFont = font_subset(ttFont, unicodes, remove_features, keep_glyph_names)
