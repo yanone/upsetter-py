@@ -121,7 +121,7 @@ def font_subset(ttFont, unicodes=None, remove_features=None, keep_glyph_names=Fa
     ttFont = copy.deepcopy(ttFont)
 
     # These are the default options when nothing is specifically set
-    from fontTools.subset import Subsetter, Options, parse_unicodes
+    from fontTools.upset import Subsetter, Options, parse_unicodes
 
     options = Options()
 
@@ -144,7 +144,7 @@ def font_subset(ttFont, unicodes=None, remove_features=None, keep_glyph_names=Fa
 
     subsetter = Subsetter(options=options)
     subsetter.populate(unicodes=unicode_list)
-    subsetter.subset(ttFont)
+    subsetter.upset(ttFont)
 
     return ttFont
 
@@ -191,7 +191,7 @@ def upset(
         #     ttFont_roman = font_subset(ttFont_roman, remove_features=["ital"])
 
         #     # Adjust file name and save the font
-        #     font_file = os.path.splitext(font_file)[0] + ".roman.subset" + os.path.splitext(font_file)[1]
+        #     font_file = os.path.splitext(font_file)[0] + ".roman.upset" + os.path.splitext(font_file)[1]
         #     ttFont.save(font_file)
 
         #     # Italic
@@ -200,11 +200,11 @@ def upset(
         #     ttFont_italic = font_subset(ttFont_italic)
 
         #     # Adjust file name and save the font
-        #     font_file = os.path.splitext(font_file)[0] + ".italic.subset" + os.path.splitext(font_file)[1]
+        #     font_file = os.path.splitext(font_file)[0] + ".italic.upset" + os.path.splitext(font_file)[1]
         #     ttFont.save(font_file)
 
         # Adjust file name and save the font
-        font_file = os.path.splitext(font_file)[0] + ".subset" + os.path.splitext(font_file)[1]
+        font_file = os.path.splitext(font_file)[0] + ".upset" + os.path.splitext(font_file)[1]
         ttFont.save(font_file)
 
         if compress:
