@@ -60,6 +60,12 @@ def main():
         help="Append suffix to family name, e.g. 'SC', so 'Garamond' becomes 'Garamond SC'.",
     )
     parser.add_argument(
+        "-c",
+        "--compress",
+        help="Compress the font to WOFF2",
+        action="store_true",
+    )
+    parser.add_argument(
         "--glyph-names",
         help="Keep glyph names intact. Default is to remove them to save space.",
         action="store_true",
@@ -87,6 +93,7 @@ def main():
         remove_features=args.remove.split(",") if args.remove else None,
         name=args.name,
         # italic=args.italic,
+        compress=args.compress,
         keep_glyph_names=args.glyph_names,
     )
 

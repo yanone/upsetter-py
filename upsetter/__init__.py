@@ -158,6 +158,7 @@ def upset(
     italic=False,
     name="",
     keep_glyph_names=False,
+    compress=False,
 ):
 
     # Input validation
@@ -205,5 +206,10 @@ def upset(
         # Adjust file name and save the font
         font_file = os.path.splitext(font_file)[0] + ".subset" + os.path.splitext(font_file)[1]
         ttFont.save(font_file)
+
+        if compress:
+            ttFont.flavor = "woff2"
+            font_file = os.path.splitext(font_file)[0] + ".woff2"
+            ttFont.save(font_file, reorderTables=False)
 
         ttFont.close()
