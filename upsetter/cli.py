@@ -57,7 +57,7 @@ def main():
         "--name",
         required=False,
         type=str,
-        help="Append suffix to family name, e.g. 'Garamond' becomes 'Garamond SC'.",
+        help="Append suffix to family name, e.g. 'SC', so 'Garamond' becomes 'Garamond SC'.",
     )
     parser.add_argument(
         "--glyph-names",
