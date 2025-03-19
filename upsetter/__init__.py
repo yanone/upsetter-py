@@ -103,7 +103,7 @@ def font_freeze_features(ttFont, freeze_features):
     return ttFont
 
 
-def font_subset(ttFont, unicodes=None, remove_features=None):
+def font_subset(ttFont, unicodes=None, remove_features=None, keep_glyph_names=False):
 
     ttFont = copy.deepcopy(ttFont)
 
@@ -116,7 +116,7 @@ def font_subset(ttFont, unicodes=None, remove_features=None):
     gsub = ttFont["GSUB"].table
     features = [FeatureRecord.FeatureTag for FeatureRecord in gsub.FeatureList.FeatureRecord]
     options.layout_features = list(set(features) - set(remove_features) if remove_features else set(features))
-    # options.glyph_names = True  # Don't keep glyph names for now (file size optimization)
+    options.glyph_names = keep_glyph_names  # Don't keep glyph names for now (file size optimization)
 
     # Keep all unicodes
     if unicodes is None:
@@ -136,7 +136,15 @@ def font_subset(ttFont, unicodes=None, remove_features=None):
     return ttFont
 
 
-def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove_features=None, italic=False):
+def upset(
+    font_files,
+    unicodes=None,
+    subspace=None,
+    freeze_features=None,
+    remove_features=None,
+    italic=False,
+    keep_glyph_names=False,
+):
 
     # Input validation
     if freeze_features is not None and remove_features is not None:
@@ -157,7 +165,7 @@ def upset(font_files, unicodes=None, subspace=None, freeze_features=None, remove
             ttFont = font_freeze_features(ttFont, freeze_features)
 
         # Subset
-        ttFont = font_subset(ttFont, unicodes, remove_features)
+        ttFont = font_subset(ttFont, unicodes, remove_features, keep_glyph_names)
 
         # # Italic
         # TODO: Keep this for later

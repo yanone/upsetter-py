@@ -53,6 +53,11 @@ def main():
     #     action="store_true",
     # )
     parser.add_argument(
+        "--glyph-names",
+        help="Keep glyph names intact. Default is to remove them to save space.",
+        action="store_true",
+    )
+    parser.add_argument(
         "-v",
         "--verbose",
         help="Be verbose. Set logging level to INFO.",
@@ -74,6 +79,7 @@ def main():
         freeze_features=args.freeze.split(",") if args.freeze else None,
         remove_features=args.remove.split(",") if args.remove else None,
         # italic=args.italic,
+        keep_glyph_names=args.glyph_names,
     )
 
 
