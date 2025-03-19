@@ -1,0 +1,199 @@
+{
+.appVersion = "3343";
+.formatVersion = 3;
+date = "2025-03-13 17:09:35 +0000";
+familyName = "Substitution Test";
+featurePrefixes = (
+{
+automatic = 1;
+code = "languagesystem DFLT dflt;
+";
+name = Languagesystems;
+}
+);
+features = (
+{
+automatic = 1;
+code = "feature ss01;
+feature ss02;
+feature ss03;
+";
+tag = aalt;
+},
+{
+code = "lookup ss01_gsub {
+	sub a by a.ss01;
+#	sub test by test.ss01;
+} ss01_gsub;
+
+lookup ss01_gpos {
+	pos T A -50;
+} ss01_gpos;
+
+";
+labels = (
+{
+language = dflt;
+value = "";
+}
+);
+tag = ss01;
+},
+{
+automatic = 1;
+code = "sub a.ss01 by a.ss01.ss02;
+";
+labels = (
+{
+language = dflt;
+value = "";
+}
+);
+tag = ss02;
+},
+{
+automatic = 1;
+code = "sub a.ss01.ss02 by a.ss01.ss02.ss03;
+";
+labels = (
+{
+language = dflt;
+value = "";
+}
+);
+tag = ss03;
+}
+);
+fontMaster = (
+{
+id = m01;
+metricValues = (
+{
+over = 16;
+pos = 800;
+},
+{
+over = 16;
+pos = 700;
+},
+{
+over = 16;
+pos = 500;
+},
+{
+over = -16;
+},
+{
+over = -16;
+pos = -200;
+},
+{
+}
+);
+name = Regular;
+}
+);
+glyphs = (
+{
+glyphname = A;
+layers = (
+{
+layerId = m01;
+width = 600;
+}
+);
+unicode = 65;
+},
+{
+glyphname = T;
+layers = (
+{
+layerId = m01;
+width = 600;
+}
+);
+unicode = 84;
+},
+{
+glyphname = a;
+layers = (
+{
+layerId = m01;
+width = 600;
+}
+);
+unicode = 97;
+},
+{
+glyphname = a.ss01;
+lastChange = "2025-03-13 17:09:51 +0000";
+layers = (
+{
+layerId = m01;
+width = 600;
+}
+);
+},
+{
+glyphname = a.ss01.ss02;
+lastChange = "2025-03-13 17:09:56 +0000";
+layers = (
+{
+layerId = m01;
+width = 600;
+}
+);
+},
+{
+glyphname = a.ss01.ss02.ss03;
+lastChange = "2025-03-13 17:10:02 +0000";
+layers = (
+{
+layerId = m01;
+width = 600;
+}
+);
+},
+{
+glyphname = test;
+layers = (
+{
+layerId = m01;
+width = 600;
+}
+);
+},
+{
+glyphname = test.ss01;
+layers = (
+{
+layerId = m01;
+width = 600;
+}
+);
+}
+);
+metrics = (
+{
+type = ascender;
+},
+{
+type = "cap height";
+},
+{
+type = "x-height";
+},
+{
+type = baseline;
+},
+{
+type = descender;
+},
+{
+type = "italic angle";
+}
+);
+unitsPerEm = 1000;
+versionMajor = 1;
+versionMinor = 0;
+}
