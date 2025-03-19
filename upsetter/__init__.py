@@ -121,7 +121,7 @@ def font_subset(ttFont, unicodes=None, remove_features=None, keep_glyph_names=Fa
     ttFont = copy.deepcopy(ttFont)
 
     # These are the default options when nothing is specifically set
-    from fontTools.upset import Subsetter, Options, parse_unicodes
+    from fontTools.subset import Subsetter, Options, parse_unicodes
 
     options = Options()
 
@@ -144,7 +144,7 @@ def font_subset(ttFont, unicodes=None, remove_features=None, keep_glyph_names=Fa
 
     subsetter = Subsetter(options=options)
     subsetter.populate(unicodes=unicode_list)
-    subsetter.upset(ttFont)
+    subsetter.subset(ttFont)
 
     return ttFont
 
