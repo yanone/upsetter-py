@@ -24,6 +24,9 @@ def font_subspace(ttFont, subspace):
 # AND all source glyphs are encoded (otherwise no cmap-remapping is possible)
 # OR with gftools-remap-layout in case of all other lookup types
 def font_freeze_features(ttFont, freeze_features):
+
+    ttFont = copy.deepcopy(ttFont)
+
     encoded_glyphs = ttFont.getBestCmap().values()
     pyft_featfreeze = []
 
@@ -101,6 +104,8 @@ def font_freeze_features(ttFont, freeze_features):
 
 
 def font_subset(ttFont, unicodes=None, remove_features=None):
+
+    ttFont = copy.deepcopy(ttFont)
 
     # These are the default options when nothing is specifically set
     from fontTools.subset import Subsetter, Options, parse_unicodes
