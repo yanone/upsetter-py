@@ -98,7 +98,9 @@ def font_freeze_features(ttFont, freeze_features):
         logging.info(f"remap_layout {freeze_features}")
 
         # Continue with remap-layout here
-        remap(ttFont, [f"{feature}=>rclt" for feature in freeze_features])
+        # Other possible target features are:
+        # rclt, rvrn, ccmp, rlig
+        remap(ttFont, [f"{feature}=>ccmp" for feature in freeze_features])
 
     return ttFont
 
