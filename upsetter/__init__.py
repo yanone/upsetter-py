@@ -28,37 +28,37 @@ def font_freeze_features(ttFont, freeze_features, name):
     ttFont = copy.deepcopy(ttFont)
 
     # Disable this check for now, always apply both tactics
-    # encoded_glyphs = ttFont.getBestCmap().values()
-    # pyft_featfreeze = []
+    encoded_glyphs = ttFont.getBestCmap().values()
+    pyft_featfreeze = []
 
-    # if "GSUB" in ttFont:
-    #     gsub = ttFont["GSUB"].table
-    #     for feature in gsub.FeatureList.FeatureRecord:
-    #         if feature.FeatureTag in freeze_features:
-    #             found_lookuptypes = set()
-    #             lookups = []
-    #             for lookup_index in feature.Feature.LookupListIndex:
-    #                 lookup = gsub.LookupList.Lookup[lookup_index]
-    #                 found_lookuptypes.add(lookup.LookupType)
-    #                 lookups.append(lookups)
+    if "GSUB" in ttFont:
+        gsub = ttFont["GSUB"].table
+        for feature in gsub.FeatureList.FeatureRecord:
+            if feature.FeatureTag in freeze_features:
+                found_lookuptypes = set()
+                lookups = []
+                for lookup_index in feature.Feature.LookupListIndex:
+                    lookup = gsub.LookupList.Lookup[lookup_index]
+                    found_lookuptypes.add(lookup.LookupType)
+                    lookups.append(lookups)
 
-    #             # All lookups are of type 1 (Single Substitution)
-    #             if found_lookuptypes and found_lookuptypes == {1}:
+                # All lookups are of type 1 (Single Substitution)
+                if found_lookuptypes and found_lookuptypes == {1}:
 
-    #                 # Check whether all substitution source glyphs are encoded
-    #                 source_glyphs_have_unicodes = []
-    #                 for lookup_index in feature.Feature.LookupListIndex:
-    #                     lookup = gsub.LookupList.Lookup[lookup_index]
-    #                     for subtable in lookup.SubTable:
-    #                         for glyph_name in subtable.mapping.keys():
-    #                             if glyph_name in encoded_glyphs:
-    #                                 source_glyphs_have_unicodes.append(True)
-    #                             else:
-    #                                 source_glyphs_have_unicodes.append(False)
+                    # Check whether all substitution source glyphs are encoded
+                    source_glyphs_have_unicodes = []
+                    for lookup_index in feature.Feature.LookupListIndex:
+                        lookup = gsub.LookupList.Lookup[lookup_index]
+                        for subtable in lookup.SubTable:
+                            for glyph_name in subtable.mapping.keys():
+                                if glyph_name in encoded_glyphs:
+                                    source_glyphs_have_unicodes.append(True)
+                                else:
+                                    source_glyphs_have_unicodes.append(False)
 
-    #                 # All source glyphs are encoded
-    #                 if all(source_glyphs_have_unicodes):
-    #                     pyft_featfreeze.append(feature.FeatureTag)
+                    # All source glyphs are encoded
+                    if all(source_glyphs_have_unicodes):
+                        pyft_featfreeze.append(feature.FeatureTag)
 
     logging.info("#" * 40)
     logging.info(f"pyft_featfreeze {freeze_features}")
@@ -70,7 +70,7 @@ def font_freeze_features(ttFont, freeze_features, name):
     options.inpath = ""  # input .otf or .ttf font file
     options.outpath = None  # output .otf or .ttf font file (optional)
     options.features = ",".join(
-        freeze_features
+        pyft_featfreeze
     )  # comma-separated list of OpenType feature tags, e.g. 'smcp,c2sc,onum'
     options.script = None  # OpenType script tag, e.g. 'cyrl' (optional)
     options.lang = None  # OpenType language tag, e.g. 'SRB ' (optional)
@@ -86,7 +86,8 @@ def font_freeze_features(ttFont, freeze_features, name):
     pyft_featfreezer = RemapByOTL(options)
     pyft_featfreezer.ttx = ttFont
 
-    pyft_featfreezer.remapByOTL()
+    if pyft_featfreeze:
+        pyft_featfreezer.remapByOTL()
     if name:
         old_ps_name = ttFont["name"].getName(6, 3, 1, 1033).toUnicode()
 
