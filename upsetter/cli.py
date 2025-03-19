@@ -56,7 +56,6 @@ def main():
         "-v",
         "--verbose",
         help="Be verbose. Set logging level to INFO.",
-        required=False,
         action="store_true",
     )
     parser.add_argument("font_files", nargs="+", help="Font files to process (repeatable)")
@@ -65,6 +64,8 @@ def main():
 
     if args.verbose:
         logging.basicConfig(level=logging.INFO)
+    else:
+        logging.basicConfig(level=logging.WARNING)
 
     upset(
         args.font_files,
