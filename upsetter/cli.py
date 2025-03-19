@@ -53,6 +53,13 @@ def main():
     #     action="store_true",
     # )
     parser.add_argument(
+        "-n",
+        "--name",
+        required=False,
+        type=str,
+        help="Append suffix to family name, e.g. 'Garamond' becomes 'Garamond SC'.",
+    )
+    parser.add_argument(
         "--glyph-names",
         help="Keep glyph names intact. Default is to remove them to save space.",
         action="store_true",
@@ -78,6 +85,7 @@ def main():
         subspace=parseLimits(args.subspace.split(",")) if args.subspace else None,
         freeze_features=args.freeze.split(",") if args.freeze else None,
         remove_features=args.remove.split(",") if args.remove else None,
+        name=args.name,
         # italic=args.italic,
         keep_glyph_names=args.glyph_names,
     )
